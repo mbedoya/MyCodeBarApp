@@ -1,10 +1,16 @@
 angular.module('starter.controllers', [])
 
   .controller('DashCtrl', function ($scope) {
+
     $scope.scan = function () {
+
+      $scope.model.value = 'reading';
 
       cordova.plugins.barcodeScanner.scan(
         function (result) {
+
+          $scope.model.value = result.text;
+
           alert("We got a barcode\n" +
             "Result: " + result.text + "\n" +
             "Format: " + result.format + "\n" +
@@ -22,6 +28,12 @@ angular.module('starter.controllers', [])
         }
       );
     }
+
+    $scope.initialize = function () {
+      $scope.model = { value : '' };
+    }
+
+    $scope.initialize();
   })
 
   .controller('ChatsCtrl', function ($scope, Chats) {
