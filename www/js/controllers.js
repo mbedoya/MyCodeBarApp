@@ -2,9 +2,16 @@ angular.module('starter.controllers', [])
 
   .controller('DashCtrl', function ($scope) {
 
-    $scope.scan = function () {
+    $scope.parse = function () {
+      var endIndex = String($scope.model.value).indexOf("+");
+       var text = String($scope.model.value).substring(0, endIndex+1);
 
-      $scope.model.value = 'reading';
+       console.log($scope.model.value);
+       console.log(endIndex);
+       console.log(text);
+    }
+
+    $scope.scan = function () {
 
       cordova.plugins.barcodeScanner.scan(
         function (result) {
@@ -30,7 +37,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.initialize = function () {
-      $scope.model = { value : '' };
+      $scope.model = { value : '020857701123A         01955657144       097950020071262838BEDOYA                 LONDOÑO                MAURICIO                                      0M19820908001001O+ 2' };
     }
 
     $scope.initialize();
