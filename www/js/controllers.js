@@ -40,7 +40,6 @@ angular.module('starter.controllers', [])
       var nameIndex = bloodTypeIndex - 17;
       console.log("Chars");
       while (isNaN(text.substr(nameIndex, 1)) || text.charCodeAt(nameIndex) == 32) {
-        console.log(text.charCodeAt(nameIndex));
         nameIndex--;
       }
       nameIndex++;
