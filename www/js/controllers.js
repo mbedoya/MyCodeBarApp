@@ -3,12 +3,56 @@ angular.module('starter.controllers', [])
   .controller('DashCtrl', function ($scope) {
 
     $scope.parse = function () {
-      var endIndex = String($scope.model.value).indexOf("+");
-       var text = String($scope.model.value).substring(0, endIndex+1);
 
-       console.log($scope.model.value);
-       console.log(endIndex);
-       console.log(text);
+      var text = "";
+      var endCharFound = false;
+
+      var endIndex = String($scope.model.value).indexOf("+");
+      if (endIndex > -1) {
+        text = String($scope.model.value).substring(0, endIndex + 1);
+        endCharFound = true;
+      } else {
+        endIndex = String($scope.model.value).indexOf("-");
+        if (endIndex > -1) {
+          text = String($scope.model.value).substring(0, endIndex + 1);
+          endCharFound = true;
+        } else {
+          console.log("No se puede procesar la cédula");
+        }
+      }
+
+      //if only 1 char blood type
+      var bloodTypeIndex = text.length - 2;
+      var bloodTypeChars = 2;
+      //if 2 chars blood type
+      if (isNaN(text.substr(bloodTypeIndex - 1, 1))) {
+        bloodTypeIndex = bloodTypeIndex - 1;
+        bloodTypeChars = 2;
+      }
+
+      //Blood Type
+      console.log("Blood Type:" + text.substr(bloodTypeIndex, bloodTypeChars));
+      $scope.bloodType = text.substr(bloodTypeIndex, bloodTypeChars);
+      $scope.birthDate = text.substr(bloodTypeIndex-14, 8);
+      $scope.gender = text.substr(bloodTypeIndex-15, 1);
+
+      //Find The Name
+      var auxIndex = bloodTypeIndex-17;
+      while(isNaN(text.substr(auxIndex, 1)) || text.charCodeAt(auxIndex) == 32){
+        auxIndex--;
+      }
+      auxIndex++;
+
+      console.log("Gender index: " + (bloodTypeIndex-15));
+      console.log("Name index: " + (auxIndex) + " " + text.charCodeAt(auxIndex));
+
+      $scope.name = text.substr(auxIndex, bloodTypeIndex-17-auxIndex);
+
+      if (endCharFound) {
+        console.log($scope.model.value);
+        console.log(endIndex);
+        console.log(text);
+      }
     }
 
     $scope.scan = function () {
@@ -18,10 +62,14 @@ angular.module('starter.controllers', [])
 
           $scope.model.value = result.text;
 
+           $scope.$apply();
+
           alert("We got a barcode\n" +
             "Result: " + result.text + "\n" +
             "Format: " + result.format + "\n" +
             "Cancelled: " + result.cancelled);
+
+            $scope.parse();
         },
         function (error) {
           alert("Scanning failed: " + error);
@@ -37,7 +85,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.initialize = function () {
-      $scope.model = { value : '020857701123A         01955657144       097950020071262838BEDOYA                 LONDOÑO                MAURICIO                                      0M19820908001001O+ 2' };
+      $scope.model = { value: '020857701123A         01955657144       097950020071262838BEDOYA                 LONDOÑO                MAURICIO                                      0M19820908001001O+ 2' };
     }
 
     $scope.initialize();
