@@ -33,20 +33,34 @@ angular.module('starter.controllers', [])
       //Blood Type
       console.log("Blood Type:" + text.substr(bloodTypeIndex, bloodTypeChars));
       $scope.bloodType = text.substr(bloodTypeIndex, bloodTypeChars);
-      $scope.birthDate = text.substr(bloodTypeIndex-14, 8);
-      $scope.gender = text.substr(bloodTypeIndex-15, 1);
+      $scope.birthDate = text.substr(bloodTypeIndex - 14, 8);
+      $scope.gender = text.substr(bloodTypeIndex - 15, 1);
 
       //Find The Name
-      var auxIndex = bloodTypeIndex-17;
-      while(isNaN(text.substr(auxIndex, 1)) || text.charCodeAt(auxIndex) == 32){
-        auxIndex--;
+      var nameIndex = bloodTypeIndex - 17;
+      while (isNaN(text.substr(nameIndex, 1)) || text.charCodeAt(nameIndex) == 32) {
+        nameIndex--;
       }
-      auxIndex++;
+      nameIndex++;
 
-      console.log("Gender index: " + (bloodTypeIndex-15));
-      console.log("Name index: " + (auxIndex) + " " + text.charCodeAt(auxIndex));
+      console.log("Gender index: " + (bloodTypeIndex - 15));
+      console.log("Name index: " + (nameIndex) + " " + text.charCodeAt(nameIndex));
 
-      $scope.name = text.substr(auxIndex, bloodTypeIndex-17-auxIndex);
+      $scope.name = text.substr(nameIndex, bloodTypeIndex - 17 - nameIndex);
+
+      var idIndex = nameIndex - 10;
+      var indexChars = 10;
+      //Check left zeros
+      if (text.substr(idIndex, 1) == 0) {
+        idIndex++;
+        indexChars--;
+        if (text.substr(idIndex, 1) == 0) {
+          idIndex++;
+          indexChars--;
+        }
+      }
+
+      $scope.id = text.substr(idIndex, indexChars);
 
       if (endCharFound) {
         console.log($scope.model.value);
@@ -62,14 +76,9 @@ angular.module('starter.controllers', [])
 
           $scope.model.value = result.text;
 
-           $scope.$apply();
+          $scope.parse();
 
-          alert("We got a barcode\n" +
-            "Result: " + result.text + "\n" +
-            "Format: " + result.format + "\n" +
-            "Cancelled: " + result.cancelled);
-
-            $scope.parse();
+          $scope.$apply();
         },
         function (error) {
           alert("Scanning failed: " + error);
