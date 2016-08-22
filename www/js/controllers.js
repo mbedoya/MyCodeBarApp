@@ -48,12 +48,18 @@ angular.module('starter.controllers', [])
       console.log("Name index: " + (nameIndex) + " " + text.charCodeAt(nameIndex));
 
       var name = text.substr(nameIndex, bloodTypeIndex - 17 - nameIndex);
+      var formattedName = '';
       var asciiName = '';
-      $scope.name = name;
       for (var index = 0; index < name.length; index++) {
-         asciiName = asciiName + name.charCodeAt(index) + '-';
+         var char = name.charCodeAt(index); 
+        if(char == 0){
+          char = 32;
+        }
+        asciiName = asciiName + name.charCodeAt(index) + '-';
+        formattedName = formattedName + String.fromCharCode(char);
       }
       $scope.ascii = asciiName;
+      $scope.name = formattedName;
 
       var idIndex = nameIndex - 10;
       var indexChars = 10;
