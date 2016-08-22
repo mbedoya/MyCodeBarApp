@@ -47,7 +47,13 @@ angular.module('starter.controllers', [])
       console.log("Gender index: " + (bloodTypeIndex - 15));
       console.log("Name index: " + (nameIndex) + " " + text.charCodeAt(nameIndex));
 
-      $scope.name = text.substr(nameIndex, bloodTypeIndex - 17 - nameIndex);
+      var name = text.substr(nameIndex, bloodTypeIndex - 17 - nameIndex);
+      var asciiName = '';
+      $scope.name = name;
+      for (var index = 0; index < name.length; index++) {
+         asciiName = asciiName + name.charCodeAt(index) + '-';
+      }
+      $scope.ascii = asciiName;
 
       var idIndex = nameIndex - 10;
       var indexChars = 10;
